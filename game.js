@@ -2,6 +2,11 @@ const readline = require('readline')
 
 const rl = readline.createInterface(process.stdin, process.stdout)
 
+const RESET = "\x1b[0m"
+const BLUE = "\x1b[34m"
+const YELLOW = "\x1b[33m"
+const GREEN = "\x1b[32m"
+
 let board = '123456789'
 let playerSymbol = 'x'
 let gameOver = false;
@@ -15,8 +20,9 @@ function promptUser() {
         if (isValid) {
             board = updateBoard(board, input, playerSymbol)
 
-            const gameResult = checkGameResultRegex()
+            const gameResult = checkGameResultLoop()
             if (gameResult.isWin) {
+                renderBoard(board)
                 console.log(`\n\nGame over! ${gameResult.winner} won!\n\n`)
                 return;
             }
@@ -30,10 +36,6 @@ function promptUser() {
         } else {
             console.log(`\n\nYou cannot place your ${playerSymbol} there\n\n`)
         }
-        // Check for game over
-        if (gameOver) {
-
-        }
         promptUser(playerSymbol)
     })
 }
@@ -42,7 +44,77 @@ function updateBoard(b, move, player) {
     return b.replace(move, player)
 }
 
-function renderBoard(b) {
+function renderBoard() {
+    const largeSymbols = {
+        x: [
+            '  **   **    ',
+            '   ** **     ',
+            '    ***      ',
+            '   ** **     ',
+            '  **   **    ',
+        ],
+        o: [
+            '    *****    ',
+            '  ***   ***  ',
+            '  **     **  ',
+            '  ***   ***  ',
+            '    *****    ',
+        ],
+        blank: Array(5).fill('             ')
+    }
+
+    console.log('\n\n')
+
+    // This is the board row
+    for (let i = 0; i < 3; i++) {
+
+        const currentBoardRow = board.slice(i * 3, (i * 3) + 3)
+        // Each row has 5 lines
+        for (let j = 0; j < 5; j++) {
+            const row = j;
+            let line = ''
+            // Column
+            for (let k = 0; k < 3; k++) {
+                const currentBoardSymbol = currentBoardRow[k]
+                if (parseInt(currentBoardSymbol) in [1, 2, 3, 4, 5, 6, 7, 8, 9]) {
+                    // It is blank
+                    line += RESET + (largeSymbols['blank'][row]) + RESET
+                }
+                if (currentBoardSymbol == 'x') {
+                    // It is x
+                    line += BLUE + (largeSymbols[currentBoardSymbol][row]) + RESET
+                }
+                if (currentBoardSymbol == 'o') {
+                    // It is x
+                    line += YELLOW + (largeSymbols['o'][row]) + RESET
+                }
+
+                // If k is 0 or 1 then draw vertical border after
+                if (k == 0 || k == 1) {
+                    line += GREEN +'|' + RESET
+                } else {
+                    line += ' '
+                }
+
+
+
+            }
+            // Draw current line
+            console.log(line)
+
+        }
+        // Draw horizontal borders
+        if (i == 0 || i == 1) {
+            const horizontalBorder = Array(3).fill('-------------').join('')
+            console.log(GREEN+horizontalBorder+RESET)
+        }
+
+
+
+    }
+
+    // Old way
+    const b = board;
     console.log(`${b[0]}|${b[1]}|${b[2]}`)
     console.log(`${b[3]}|${b[4]}|${b[5]}`)
     console.log(`${b[6]}|${b[7]}|${b[8]}`)
