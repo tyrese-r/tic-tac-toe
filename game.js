@@ -4,10 +4,10 @@ const rl = readline.createInterface(process.stdin, process.stdout)
 
 let board = '123456789'
 let playerSymbol = 'x'
+let gameOver = false;
 
 
 function promptUser() {
-    check
     renderBoard(board)
     console.log(`\n\nIt is ${playerSymbol}'s turn!\n\n`)
     rl.question('What square will you play on now?\n\n', function (input) {
@@ -15,14 +15,24 @@ function promptUser() {
         if (isValid) {
             board = updateBoard(board, input, playerSymbol)
 
+            const gameResult = checkGameResultLoop()
+            if (gameResult.isWin) {
+                console.log(`\n\nGame over! ${gameResult.winner} won!\n\n`)
+                return;
+            }
             // Is the game over?
             if (playerSymbol == 'x') {
                 playerSymbol = 'o'
             } else {
                 playerSymbol = 'x'
             }
+
         } else {
             console.log(`\n\nYou cannot place your ${playerSymbol} there\n\n`)
+        }
+        // Check for game over
+        if (gameOver) {
+
         }
         promptUser(playerSymbol)
     })
@@ -65,4 +75,62 @@ function validateInput(input) {
     return false
 }
 
+function checkGameResultLoop() {
+    // Possible winning positions
+    const winConditions = [
+        /* Horizonal */
+        '123',
+        '456',
+        '789',
+        /* Vertical */
+        '147',
+        '258',
+        '369',
+        /* Diagonal */
+        '159',
+        '357'
+    ]
+    let gameResult = {
+        isWin: false, // false if draw
+        winner: null // null if draw
+    }
 
+    winConditions.forEach(condition => {
+        // Check to see which symbol is in the first position
+        // then add to counter everytime the symbol matches the one on the board
+        const symbol = board[condition[0] - 1]
+        let counter = 0;
+
+        for (let i = 0; i < condition.length; i++) {
+            const position = condition[i] - 1;
+            if (board[position] == symbol) {
+                counter += 1
+            }
+        }
+
+        // If three symbols matches then set win
+        if (counter == 3) {
+            gameResult.isWin = true
+            gameResult.winner = symbol
+            return gameResult
+        }
+    })
+
+    // Return draw
+    return gameResult
+}
+
+function checkGameResultRegex() {
+
+}
+/**
+ * horizontal
+ * xxx
+ * 
+ * vertical
+ * x..x..x
+ * 
+ * diagonal
+ * x...x...x
+ * ..x.x.x..
+ */
