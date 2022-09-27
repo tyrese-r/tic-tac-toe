@@ -1,3 +1,4 @@
+const { exit } = require('process')
 const readline = require('readline')
 
 const rl = readline.createInterface(process.stdin, process.stdout)
@@ -10,6 +11,7 @@ const GREEN = "\x1b[32m"
 let board = '123456789'
 let playerSymbol = 'x'
 let gameOver = false;
+let isDraw = false
 
 
 function promptUser() {
@@ -24,7 +26,16 @@ function promptUser() {
             if (gameResult.isWin) {
                 renderBoard(board)
                 console.log(`\n\nGame over! ${gameResult.winner} won!\n\n`)
-                return;
+                exit()
+            } else {
+                //Check draw
+                const regex = new RegExp('(x|o){9}')
+                isDraw = regex.test(board)
+                if (isDraw) {
+                    renderBoard(board)
+                    console.log(`\n\nGame over! It was a draw\n\n`)
+                    exit()
+                }
             }
             // Is the game over?
             if (playerSymbol == 'x') {
@@ -91,7 +102,7 @@ function renderBoard() {
 
                 // If k is 0 or 1 then draw vertical border after
                 if (k == 0 || k == 1) {
-                    line += GREEN +'|' + RESET
+                    line += GREEN + '|' + RESET
                 } else {
                     line += ' '
                 }
@@ -106,7 +117,7 @@ function renderBoard() {
         // Draw horizontal borders
         if (i == 0 || i == 1) {
             const horizontalBorder = Array(3).fill('-------------').join('')
-            console.log(GREEN+horizontalBorder+RESET)
+            console.log(GREEN + horizontalBorder + RESET)
         }
 
 
