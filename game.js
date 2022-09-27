@@ -7,16 +7,22 @@ let playerSymbol = 'x'
 
 
 function promptUser() {
+    check
     renderBoard(board)
-    rl.question('What square will you play on now?', function (input) {
-        console.log(input)
-        board = updateBoard(board, input, playerSymbol)
+    console.log(`\n\nIt is ${playerSymbol}'s turn!\n\n`)
+    rl.question('What square will you play on now?\n\n', function (input) {
+        const isValid = validateInput(input);
+        if (isValid) {
+            board = updateBoard(board, input, playerSymbol)
 
-        // Is the game over?
-        if(playerSymbol == 'x') {
-            playerSymbol = 'o'
-        }else {
-            playerSymbol = 'x'
+            // Is the game over?
+            if (playerSymbol == 'x') {
+                playerSymbol = 'o'
+            } else {
+                playerSymbol = 'x'
+            }
+        } else {
+            console.log(`\n\nYou cannot place your ${playerSymbol} there\n\n`)
         }
         promptUser(playerSymbol)
     })
@@ -36,9 +42,27 @@ function renderBoard(b) {
 promptUser()
 
 
-// function validateInput (input) {
-//     // What is not allowed
-//     // - Not a integer
-//     // - Not 
-//     if (typeof input == 'number' && parseInt(input) >= 0) 
-// }
+/**
+ * This function validates user input and decides if it can be accepted
+ * @param {string} input User input
+ * @returns {boolean} Whether it can be accepted or not
+ */
+function validateInput(input) {
+    // What is allowed?
+    // - Must be one character
+    // - Must be integer
+    // - Integer between 1 and 9
+    // - The space must be empty on the board
+
+    // reject if length is greater than 1
+    if (input.length > 1) { return false }
+
+    // convert to int
+    const inp = parseInt(input)
+
+    // Accept if space equals to the input
+    if (board[inp - 1] === inp.toString()) { return true }
+    return false
+}
+
+
