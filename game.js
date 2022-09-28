@@ -23,7 +23,7 @@ function promptUser() {
             board = updateBoard(board, input, playerSymbol)
 
             const gameResult = checkGameResultRegex()
-            console.log(gameResult)
+            // console.log(gameResult)
             if (gameResult.isWin) {
                 renderBoard(board)
                 console.log(`\n\nGame over! ${gameResult.winner} won!\n\n`)
@@ -38,7 +38,8 @@ function promptUser() {
                     exit()
                 }
             }
-            // Is the game over?
+
+            // Swap player symbols
             if (playerSymbol == 'x') {
                 playerSymbol = 'o'
             } else {
@@ -212,9 +213,10 @@ function checkGameResultRegex() {
 
     const symbols = ['x', 'o']
     symbols.forEach(symbol => {
-        const regexString = '(###.......)|(...###...)|(......###)|(#..#..#)|(#...#...#)|(..#.#.#..)'
+        const regexString = '(###......)|(...###...)|(......###)|(#..#..#)|(#...#...#)|(..#.#.#..)'
         const regex = new RegExp(regexString.replaceAll('#', symbol))
-        console.log(regex)
+        // console.log(regex)
+        // console.log(board)
 
         if (regex.test(board)) {
             gameResult.isWin = true
