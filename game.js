@@ -10,7 +10,7 @@ const GREEN = "\x1b[32m"
 
 let board = '123456789'
 let playerSymbol = 'x'
-let gameOver = false;
+let gameOver = false
 let isDraw = false
 
 
@@ -18,11 +18,12 @@ function promptUser() {
     renderBoard(board)
     console.log(`\n\nIt is ${playerSymbol}'s turn!\n\n`)
     rl.question('What square will you play on now?\n\n', function (input) {
-        const isValid = validateInput(input);
+        const isValid = validateInput(input)
         if (isValid) {
             board = updateBoard(board, input, playerSymbol)
 
-            const gameResult = checkGameResultLoop()
+            const gameResult = checkGameResultRegex()
+            console.log(gameResult)
             if (gameResult.isWin) {
                 renderBoard(board)
                 console.log(`\n\nGame over! ${gameResult.winner} won!\n\n`)
@@ -82,7 +83,7 @@ function renderBoard() {
         const currentBoardRow = board.slice(i * 3, (i * 3) + 3)
         // Each row has 5 lines
         for (let j = 0; j < 5; j++) {
-            const row = j;
+            const row = j
             let line = ''
             // Column
             for (let k = 0; k < 3; k++) {
@@ -96,7 +97,7 @@ function renderBoard() {
                     line += BLUE + (largeSymbols[currentBoardSymbol][row]) + RESET
                 }
                 if (currentBoardSymbol == 'o') {
-                    // It is x
+                    // It is o
                     line += YELLOW + (largeSymbols['o'][row]) + RESET
                 }
 
@@ -125,7 +126,7 @@ function renderBoard() {
     }
 
     // Old way
-    const b = board;
+    const b = board
     console.log(`${b[0]}|${b[1]}|${b[2]}`)
     console.log(`${b[3]}|${b[4]}|${b[5]}`)
     console.log(`${b[6]}|${b[7]}|${b[8]}`)
@@ -182,10 +183,10 @@ function checkGameResultLoop() {
         // Check to see which symbol is in the first position
         // then add to counter everytime the symbol matches the one on the board
         const symbol = board[condition[0] - 1]
-        let counter = 0;
+        let counter = 0
 
         for (let i = 0; i < condition.length; i++) {
-            const position = condition[i] - 1;
+            const position = condition[i] - 1
             if (board[position] == symbol) {
                 counter += 1
             }
@@ -211,8 +212,9 @@ function checkGameResultRegex() {
 
     const symbols = ['x', 'o']
     symbols.forEach(symbol => {
-        const regexString = '(xxx)|(x..x..x)|(x...x...x)|(..x.x.x..)'
-        const regex = new RegExp(regexString.replace('x', symbol))
+        const regexString = '(###.......)|(...###...)|(......###)|(#..#..#)|(#...#...#)|(..#.#.#..)'
+        const regex = new RegExp(regexString.replaceAll('#', symbol))
+        console.log(regex)
 
         if (regex.test(board)) {
             gameResult.isWin = true
