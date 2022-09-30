@@ -248,7 +248,7 @@ function getFreeSpaces(board) {
 }
 
 function randomMove() {
-    const items = getFreeSpaces()
+    const items = getFreeSpaces(localStorage.getItem('board'))
     return items[Math.floor(Math.random() * items.length)]
 }
 function bestMove() {
