@@ -55,7 +55,12 @@ main {
     justify-content: center;
 }
 
-header {
+.title-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.role-select-container {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -104,4 +109,14 @@ footer {
 }
 #btn-reset:active {
     border: 3px dashed black;
+}
+
+.role-select-container {
+    padding: 10px;
+}
+
+select {
+    border: 1px;
+    background-color: white;
+    text-decoration: underline;
 }

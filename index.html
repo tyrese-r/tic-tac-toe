@@ -7,14 +7,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+    <title>Tic Tac Toe</title>
 </head>
 
 <body>
     <header>
-        <h1 id="status-text">Tic Tac Toe</h1>
+        <div class="title-container">
+            <h1 id="status-text">Tic Tac Toe</h1>
+        </div>
+        
+        <div class="role-select-container">
+            
+            <div>
+                <label for="role-select">Player '<span class="bold">o</span>' is a</label>
+
+                <select name="role" id="role-select" onchange="roleChange()">
+                    <option value="human">human</option>
+                    <option value="easy">easy computer</option>
+                    <option value="hard">hard computer</option>
+                </select>
+            </div>
+        </div>
+        
     </header>
-    <main><div class="game-board">
+    <main>
+        <div class="game-board">
             <section class="game-cell">
             </section>
             <section class="game-cell">
@@ -34,11 +51,14 @@
             </section>
             <section class="game-cell">
             </section>
-        </div></main>
+        </div>
+    </main>
     <footer>
         <div>
             <button id="btn-reset" onclick="resetGame()">Restart</button>
+
         </div>
+
     </footer>
     <script src="./script.js"></script>
 </body>
