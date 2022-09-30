@@ -122,7 +122,7 @@ function playerO() {
 
         default:
             // If human or anything else then do nothing
-            updateStatusText(`It is ${setBoldText(newSymbol)}'s turn`)
+            updateStatusText(`It is ${setBoldText('o')}'s turn`)
             break;
 
     }
